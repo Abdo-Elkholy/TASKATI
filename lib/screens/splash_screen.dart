@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:taskati/gen/assets.gen.dart';
 import 'package:taskati/screens/auth_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -11,11 +12,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final Shader linearGradient = LinearGradient(
-    colors: <Color>[
-      Color(0xDD00B2FF),
-      Color(0xFF0076FF),
-      Color(0xFF001598),
-    ],
+    colors: <Color>[Color(0xDD00B2FF), Color(0xFF0076FF), Color(0xFF001598)],
   ).createShader(Rect.fromLTWH(50.0, 0.0, 300.0, 70.0));
 
   @override
@@ -26,9 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(
-      context,
-    ).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -46,12 +41,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                   fontSize: 70,
                   fontWeight: FontWeight.bold,
-                  foreground: Paint()
-                    ..shader = linearGradient,
+                  foreground: Paint()..shader = linearGradient,
                 ),
               ),
             ),
-            Lottie.asset("assets/splash_loading_icon.json"),
+            Lottie.asset(Assets.splashLoadingIcon),
           ],
         ),
       ),
@@ -64,9 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => AuthScreen(),
-        ),
+        MaterialPageRoute(builder: (context) => AuthScreen()),
       );
     });
   }

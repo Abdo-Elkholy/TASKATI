@@ -1,8 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskati/screens/home_screen.dart';
 import 'package:taskati/widgets/app_button.dart';
+import 'package:taskati/widgets/app_inputs.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -15,22 +17,16 @@ class _AuthScreenState extends State<AuthScreen> {
   final ImagePicker picker = ImagePicker();
   XFile? photo;
   XFile? image;
-  String? userName;
-  final TextEditingController name =
-      TextEditingController();
+  final TextEditingController name = TextEditingController();
 
   void openCamera() async {
-    photo = await picker.pickImage(
-      source: ImageSource.camera,
-    );
+    photo = await picker.pickImage(source: ImageSource.camera);
     image = null;
     setState(() {});
   }
 
   void openGallery() async {
-    image = await picker.pickImage(
-      source: ImageSource.gallery,
-    );
+    image = await picker.pickImage(source: ImageSource.gallery);
     photo = null;
     setState(() {});
   }
@@ -48,10 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
               replacement: InkWell(
                 child: Text(
                   "Done",
-                  style: TextStyle(
-                    color: Color(0xff4E5AE8),
-                    fontSize: 18,
-                  ),
+                  style: TextStyle(color: Color(0xff4E5AE8), fontSize: 18),
                 ),
                 onTap: () {
                   String s = name.text;
@@ -69,10 +62,7 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
               child: Text(
                 "Done",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 18,
-                ),
+                style: TextStyle(color: Colors.grey, fontSize: 18),
               ),
             ),
           ),
@@ -94,20 +84,24 @@ class _AuthScreenState extends State<AuthScreen> {
                       backgroundImage: photo != null
                           ? FileImage(File(photo!.path))
                           : (image != null
-                                ? FileImage(
-                                    File(image!.path),
-                                  )
+                                ? FileImage(File(image!.path))
                                 : null),
                     ),
-                    IconButton(
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(50),
+                        ),
+                        backgroundColor: Colors.grey,
+                      ),
                       onPressed: () {
                         photo = null;
                         image = null;
                         setState(() {});
                       },
-                      icon: Icon(
+                      child: Icon(
                         Icons.close_rounded,
-                        color: Color(0xffFF8746),
+                        color: Color(0xffffffff),
                         size: 30,
                       ),
                     ),
@@ -124,45 +118,19 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              AppButton(
-                data: "Upload From Camera",
-                onClick: openCamera,
-              ),
+              AppButton(data: "Upload From Camera", onClick: openCamera),
               SizedBox(height: 10),
-              AppButton(
-                data: "Upload From Gallery",
-                onClick: openGallery,
-              ),
+              AppButton(data: "Upload From Gallery", onClick: openGallery),
               SizedBox(height: 15),
-              SizedBox(
-                width: 340,
-                child: Divider(height: 50, thickness: 2),
-              ),
+              SizedBox(width: 340, child: Divider(height: 50, thickness: 2)),
               SizedBox(
                 width: 300,
-                child: TextFormField(
-                  controller: name,
-
-                  onTapOutside: (value) {
-                    FocusScope.of(context).unfocus();
+                child: AppInputs(
+                  hint: 'Enter your name',
+                  data: name,
+                  onChanged: (v) {
+                    setState(() {});
                   },
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF00418A),
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        20,
-                      ),
-                    ),
-                    label: Text("enter your name"),
-                    labelStyle: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                  ),
                 ),
               ),
             ],
