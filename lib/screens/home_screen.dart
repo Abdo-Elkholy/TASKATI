@@ -104,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .isEmpty) {
                                           TasksData.tasks.remove(selectedDate);
                                           allDates.remove(selectedDate);
+                                          selectedIndex = -1;
                                         }
                                       });
                                     },
