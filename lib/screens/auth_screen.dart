@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taskati/models/user_model.dart';
 import 'package:taskati/screens/home_screen.dart';
 import 'package:taskati/widgets/app_button.dart';
 import 'package:taskati/widgets/app_inputs.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+  final UserModel user;
+
+  const AuthScreen({super.key, required this.user});
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -15,19 +18,16 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final ImagePicker picker = ImagePicker();
-  XFile? photo;
-  XFile? image;
-  final TextEditingController name = TextEditingController();
 
   void openCamera() async {
-    photo = await picker.pickImage(source: ImageSource.camera);
-    image = null;
+    widget.user.photo = await picker.pickImage(source: ImageSource.camera);
+    widget.user.image = null;
     setState(() {});
   }
 
   void openGallery() async {
-    image = await picker.pickImage(source: ImageSource.gallery);
-    photo = null;
+    widget.user.image = await picker.pickImage(source: ImageSource.gallery);
+    widget.user.photo = null;
     setState(() {});
   }
 
@@ -40,21 +40,17 @@ class _AuthScreenState extends State<AuthScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: Visibility(
-              visible: name.text == "",
+              visible: widget.user.name.text == "",
               replacement: InkWell(
                 child: Text(
                   "Done",
                   style: TextStyle(color: Color(0xff4E5AE8), fontSize: 18),
                 ),
                 onTap: () {
-                  String s = name.text;
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (c) => HomeScreen(
-                        name: s,
-                        userPhoto: photo ?? image ?? null,
-                      ),
+                      builder: (c) => HomeScreen(user: widget.user),
                     ),
                     (e) => true,
                   );
@@ -75,16 +71,16 @@ class _AuthScreenState extends State<AuthScreen> {
 
             children: [
               Visibility(
-                visible: photo == null && image == null,
+                visible: widget.user.photo == null && widget.user.image == null,
                 replacement: Stack(
                   alignment: AlignmentDirectional(1.2, 1.2),
                   children: [
                     CircleAvatar(
                       radius: 80,
-                      backgroundImage: photo != null
-                          ? FileImage(File(photo!.path))
-                          : (image != null
-                                ? FileImage(File(image!.path))
+                      backgroundImage: widget.user.photo != null
+                          ? FileImage(File(widget.user.photo!.path))
+                          : (widget.user.image != null
+                                ? FileImage(File(widget.user.image!.path))
                                 : null),
                     ),
                     ElevatedButton(
@@ -95,8 +91,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         backgroundColor: Colors.grey,
                       ),
                       onPressed: () {
-                        photo = null;
-                        image = null;
+                        widget.user.image = null;
+                        widget.user.photo = null;
                         setState(() {});
                       },
                       child: Icon(
@@ -127,7 +123,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 width: 300,
                 child: AppInputs(
                   hint: 'Enter your name',
-                  data: name,
+                  data: widget.user.name,
                   onChanged: (v) {
                     setState(() {});
                   },

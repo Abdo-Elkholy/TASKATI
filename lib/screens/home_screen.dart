@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:taskati/models/task_model.dart';
-import 'package:taskati/models/tasks_data.dart';
+import 'package:taskati/models/tasks_list.dart';
+import 'package:taskati/models/user_model.dart';
 import 'package:taskati/widgets/home_wedgits/add_data.dart';
 import 'package:taskati/widgets/home_wedgits/home_app_par.dart';
 
@@ -11,10 +11,9 @@ import 'add_screen.dart';
 import 'empty_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  String name;
-  XFile? userPhoto;
+  UserModel user;
 
-  HomeScreen({super.key, required this.name, this.userPhoto});
+  HomeScreen({super.key, required this.user});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -34,7 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              HomeAppPar(name: widget.name, userPhoto: widget.userPhoto),
+              HomeAppPar(
+                name: widget.user.name.text,
+                userPhoto: widget.user.image ?? widget.user.photo,
+              ),
               const SizedBox(height: 20),
 
               /***********************/

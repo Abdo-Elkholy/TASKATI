@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:taskati/models/task_model.dart';
-import 'package:taskati/models/tasks_data.dart';
+import 'package:taskati/models/tasks_list.dart';
 
 import '../widgets/app_button.dart';
 import '../widgets/app_inputs.dart';

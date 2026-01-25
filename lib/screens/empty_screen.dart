@@ -11,7 +11,7 @@ class EmptyScreen extends StatelessWidget {
         children: [
           Image.asset(Assets.noTask.path, width: 250),
           const Text(
-            "You do not have any tasks yet!",
+            "You do not have any task!",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ],
