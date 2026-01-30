@@ -1,26 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:taskati/models/task_model.dart';
 
 class Task extends StatelessWidget {
-  final int taskColor;
-  final String taskTitle;
-  final String taskDescription;
-
-  final String taskDAte;
-  final String stratTask;
-  final String endTask;
+  final TaskModel task;
 
   final Function onDelete;
 
-  Task({
-    super.key,
-    this.taskColor = 0xff4E5AE8,
-    required this.endTask,
-    required this.stratTask,
-    required this.taskDAte,
-    required this.taskDescription,
-    required this.taskTitle,
-    required this.onDelete,
-  });
+  const Task({super.key, required this.onDelete, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +29,7 @@ class Task extends StatelessWidget {
         padding: const EdgeInsetsGeometry.all(8),
         height: 125,
         decoration: BoxDecoration(
-          color: Color(taskColor),
+          color: Color(task.color),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Row(
@@ -54,7 +40,7 @@ class Task extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    taskTitle,
+                    task.title,
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -64,7 +50,7 @@ class Task extends StatelessWidget {
                     children: [
                       const Icon(Icons.alarm, color: Colors.white),
                       Text(
-                        "${stratTask} - ${endTask}",
+                        "${task.startTime} - ${task.endTime}",
                         style: const TextStyle(color: Colors.white),
                       ),
                     ],
@@ -73,7 +59,7 @@ class Task extends StatelessWidget {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Text(
-                        taskDescription,
+                        task.description,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,

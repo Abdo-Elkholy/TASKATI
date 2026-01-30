@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class HomeAppPar extends StatelessWidget {
+class HomeAppBar extends StatelessWidget {
   String name;
   XFile? userPhoto;
 
-  HomeAppPar({super.key, required this.name, required this.userPhoto});
+  HomeAppBar({super.key, required this.name, required this.userPhoto});
 
   @override
   Widget build(BuildContext context) {

@@ -17,18 +17,23 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  TextEditingController? data;
   final ImagePicker picker = ImagePicker();
 
   void openCamera() async {
     widget.user.photo = await picker.pickImage(source: ImageSource.camera);
-    widget.user.image = null;
-    setState(() {});
+    if (widget.user.photo != null) {
+      widget.user.image = null;
+      setState(() {});
+    }
   }
 
   void openGallery() async {
     widget.user.image = await picker.pickImage(source: ImageSource.gallery);
-    widget.user.photo = null;
-    setState(() {});
+    if (widget.user.image != null) {
+      widget.user.photo = null;
+      setState(() {});
+    }
   }
 
   @override
@@ -40,7 +45,7 @@ class _AuthScreenState extends State<AuthScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: Visibility(
-              visible: widget.user.name.text == "",
+              visible: widget.user.name == null,
               replacement: InkWell(
                 child: Text(
                   "Done",
@@ -123,9 +128,11 @@ class _AuthScreenState extends State<AuthScreen> {
                 width: 300,
                 child: AppInputs(
                   hint: 'Enter your name',
-                  data: widget.user.name,
+                  data: data,
                   onChanged: (v) {
-                    setState(() {});
+                    setState(() {
+                      widget.user.name = v.toString();
+                    });
                   },
                 ),
               ),

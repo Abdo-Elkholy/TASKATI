@@ -3,9 +3,9 @@ import 'package:taskati/models/task_model.dart';
 import 'package:taskati/models/tasks_list.dart';
 import 'package:taskati/models/user_model.dart';
 import 'package:taskati/widgets/home_wedgits/add_data.dart';
-import 'package:taskati/widgets/home_wedgits/home_app_par.dart';
 
 import '../widgets/date.dart';
+import '../widgets/home_wedgits/home_app_bar.dart';
 import '../widgets/task.dart';
 import 'add_screen.dart';
 import 'empty_screen.dart';
@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    allDates = TasksData.tasks.keys.toList();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -33,8 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              HomeAppPar(
-                name: widget.user.name.text,
+              HomeAppBar(
+                name: widget.user.name!,
                 userPhoto: widget.user.image ?? widget.user.photo,
               ),
               const SizedBox(height: 20),
@@ -62,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemCount: TasksData.tasks.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, i) {
-                                allDates = TasksData.tasks.keys.toList();
                                 return InkWell(
                                   onTap: () {
                                     setState(() {
@@ -89,13 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   TaskModel currentTaskData =
                                       TasksData.tasks[selectedDate]![i];
                                   return Task(
-                                    endTask: currentTaskData.endTime,
-                                    stratTask: currentTaskData.startTime,
-                                    taskDAte: currentTaskData.date,
-                                    taskDescription:
-                                        currentTaskData.description,
-                                    taskTitle: currentTaskData.title,
-                                    taskColor: currentTaskData.color,
+                                    task: currentTaskData,
                                     onDelete: () {
                                       setState(() {
                                         TasksData.tasks[selectedDate]!.removeAt(
