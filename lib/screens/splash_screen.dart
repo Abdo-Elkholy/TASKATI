@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:taskati/gen/assets.gen.dart';
 import 'package:taskati/models/user_model.dart';
 import 'package:taskati/screens/auth_screen.dart';
+import 'package:taskati/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -53,14 +55,28 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  /// *
+  void nextscreen() async {
+    await Future.delayed(Duration(seconds: 2));
+    
 
-  void nextscreen() {
-    Future.delayed(Duration(seconds: 2), () {
+    var userBox = await Hive.openBox<UserModel>('user_box');
+    
+
+    UserModel? existingUser = userBox.get('current_user');
+    
+    if (existingUser != null && existingUser.name != null) {
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen(user: existingUser)),
+      );
+    } else {
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AuthScreen(user: UserModel())),
       );
-    });
+    }
   }
 }
+

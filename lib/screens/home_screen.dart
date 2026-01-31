@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:taskati/models/task_model.dart';
 import 'package:taskati/models/tasks_list.dart';
 import 'package:taskati/models/user_model.dart';
@@ -20,6 +21,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Hive.openBox<TaskModel>('tasks_${widget.user.name}').then((value) {
+      setState(() {
+        TasksData.fetchDataFromHive(widget.user.name!);
+        allDates = TasksData.tasks.keys.toList();
+      });
+    });
+  }
+
   int selectedIndex = -1;
   String selectedDate = "";
   List<String> allDates = TasksData.tasks.keys.toList();
@@ -37,19 +50,21 @@ class _HomeScreenState extends State<HomeScreen> {
               HomeAppBar(name: widget.user.name!, userPhoto: widget.user.photo),
               const SizedBox(height: 20),
 
-              /***********************/
+
               AddData(
                 addButton: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AddScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => AddScreen(userId: widget.user.name!),
+                    ),
                   );
                   setState(() {});
                 },
               ),
               const SizedBox(height: 20),
 
-              /**********************/
+
               Expanded(
                 child: TasksData.tasks.isEmpty
                     ? EmptyScreen()
@@ -77,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(height: 20),
-                          /**********************/
+
                           Expanded(
                             flex: 3,
                             child: ListView.separated(
@@ -87,16 +102,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       TasksData.tasks[selectedDate]![i];
                                   return Task(
                                     task: currentTaskData,
-                                    onDelete: () {
+                                    onDelete: () async {
+                                      await TasksData.deleteTask(
+                                        currentTaskData,
+                                        widget.user.name!,
+                                      );
                                       setState(() {
-                                        TasksData.tasks[selectedDate]!.removeAt(
-                                          i,
-                                        );
-                                        if (TasksData
-                                            .tasks[selectedDate]!
-                                            .isEmpty) {
-                                          TasksData.tasks.remove(selectedDate);
-                                          allDates.remove(selectedDate);
+                                        allDates = TasksData.tasks.keys.toList();
+                                        if (!allDates.contains(selectedDate)) {
                                           selectedIndex = -1;
                                         }
                                       });

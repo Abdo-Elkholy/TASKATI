@@ -7,7 +7,9 @@ import '../widgets/app_button.dart';
 import '../widgets/app_inputs.dart';
 
 class AddScreen extends StatefulWidget {
-  const AddScreen({super.key});
+  final String userId;
+
+  const AddScreen({super.key, required this.userId});
 
   @override
   State<AddScreen> createState() => _AddScreenState();
@@ -174,32 +176,19 @@ class _AddScreenState extends State<AddScreen> {
                       alignment: Alignment(0, 0),
                       child: AppButton(
                         data: "Create Task",
-                        onClick: () {
+                        onClick: () async {
                           if (formKey.currentState?.validate() == true) {
-                            if (TasksData.tasks[taskDAte.text] == null) {
-                              TasksData.tasks[taskDAte.text] = [];
-                              TasksData.tasks[taskDAte.text]?.add(
-                                TaskModel(
-                                  title: taskTitle.text,
-                                  description: taskDescription.text,
-                                  date: taskDAte.text,
-                                  startTime: stratTask.text,
-                                  endTime: stratTask.text,
-                                  color: tasksColors[selectedColor],
-                                ),
-                              );
-                            } else {
-                              TasksData.tasks[taskDAte.text]?.add(
-                                TaskModel(
-                                  title: taskTitle.text,
-                                  description: taskDescription.text,
-                                  date: taskDAte.text,
-                                  startTime: stratTask.text,
-                                  endTime: stratTask.text,
-                                  color: tasksColors[selectedColor],
-                                ),
-                              );
-                            }
+                            var newTask = TaskModel(
+                              title: taskTitle.text,
+                              description: taskDescription.text,
+                              date: taskDAte.text,
+                              startTime: stratTask.text,
+                              endTime: endTask.text,
+                              color: tasksColors[selectedColor],
+                              id: 0,
+                            );
+
+                            await TasksData.addTask(newTask, widget.userId);
 
                             Navigator.pop(context);
                           }

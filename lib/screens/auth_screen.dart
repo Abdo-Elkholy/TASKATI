@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskati/models/user_model.dart';
 import 'package:taskati/screens/home_screen.dart';
@@ -34,6 +35,21 @@ class _AuthScreenState extends State<AuthScreen> {
     setState(() {});
   }
 
+  Future<void> saveUserAndNavigate() async {
+
+    var userBox = Hive.box<UserModel>('user_box');
+    await userBox.put('current_user', widget.user);
+    
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (c) => HomeScreen(user: widget.user),
+      ),
+      (e) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,15 +65,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   "Done",
                   style: TextStyle(color: Color(0xff4E5AE8), fontSize: 18),
                 ),
-                onTap: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (c) => HomeScreen(user: widget.user),
-                    ),
-                    (e) => true,
-                  );
-                },
+                onTap: saveUserAndNavigate,
               ),
               child: Text(
                 "Done",

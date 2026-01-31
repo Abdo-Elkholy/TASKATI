@@ -18,7 +18,6 @@ class AddData extends StatelessWidget {
           children: [
             Text(
               DateFormat.yMMMd().format(today),
-              /**DATE**/
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             Text("Today", style: TextStyle(fontWeight: FontWeight.bold)),
