@@ -34,10 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              HomeAppBar(
-                name: widget.user.name!,
-                userPhoto: widget.user.image ?? widget.user.photo,
-              ),
+              HomeAppBar(name: widget.user.name!, userPhoto: widget.user.photo),
               const SizedBox(height: 20),
 
               /***********************/

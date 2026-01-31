@@ -17,23 +17,21 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  XFile? img;
+  XFile? photo;
   TextEditingController? data;
   final ImagePicker picker = ImagePicker();
 
   void openCamera() async {
-    widget.user.photo = await picker.pickImage(source: ImageSource.camera);
-    if (widget.user.photo != null) {
-      widget.user.image = null;
-      setState(() {});
-    }
+    img = await picker.pickImage(source: ImageSource.camera);
+    widget.user.photo = img?.path;
+    setState(() {});
   }
 
   void openGallery() async {
-    widget.user.image = await picker.pickImage(source: ImageSource.gallery);
-    if (widget.user.image != null) {
-      widget.user.photo = null;
-      setState(() {});
-    }
+    photo = await picker.pickImage(source: ImageSource.gallery);
+    widget.user.photo = photo?.path;
+    setState(() {});
   }
 
   @override
@@ -76,17 +74,15 @@ class _AuthScreenState extends State<AuthScreen> {
 
             children: [
               Visibility(
-                visible: widget.user.photo == null && widget.user.image == null,
+                visible: widget.user.photo == null,
                 replacement: Stack(
                   alignment: AlignmentDirectional(1.2, 1.2),
                   children: [
                     CircleAvatar(
                       radius: 80,
                       backgroundImage: widget.user.photo != null
-                          ? FileImage(File(widget.user.photo!.path))
-                          : (widget.user.image != null
-                                ? FileImage(File(widget.user.image!.path))
-                                : null),
+                          ? FileImage(File(widget.user.photo!))
+                          : null,
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -96,7 +92,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         backgroundColor: Colors.grey,
                       ),
                       onPressed: () {
-                        widget.user.image = null;
                         widget.user.photo = null;
                         setState(() {});
                       },

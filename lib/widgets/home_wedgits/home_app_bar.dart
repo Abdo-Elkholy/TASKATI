@@ -1,11 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class HomeAppBar extends StatelessWidget {
   String name;
-  XFile? userPhoto;
+  String? userPhoto;
 
   HomeAppBar({super.key, required this.name, required this.userPhoto});
 
@@ -43,7 +42,7 @@ class HomeAppBar extends StatelessWidget {
             child: CircleAvatar(
               radius: 20,
               backgroundImage: userPhoto != null
-                  ? FileImage(File(userPhoto!.path))
+                  ? FileImage(File(userPhoto!))
                   : null,
             ),
           ),
