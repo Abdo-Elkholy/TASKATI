@@ -44,4 +44,9 @@ class TasksData {
       }
     }
   }
+
+  static Future<void> markAsCompleted(TaskModel task, String userId) async {
+    task.isCompleted = true;
+    await task.save();
+  }
 }

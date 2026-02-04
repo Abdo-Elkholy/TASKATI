@@ -25,6 +25,9 @@ class TaskModel extends HiveObject {
   @HiveField(6)
   int color;
 
+  @HiveField(7)
+  bool isCompleted;
+
   TaskModel({
     required this.id,
     required this.title,
@@ -33,5 +36,6 @@ class TaskModel extends HiveObject {
     required this.startTime,
     required this.endTime,
     required this.color,
+    this.isCompleted = false,
   });
 }
